@@ -1,7 +1,99 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 100%;
   max-width: 1120px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const MapContainer = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+`;
+
+export const FormContent = styled.div`
+  form {
+    margin-top: 60px;
+    width: 300px;
+    border: 1px solid #000000;
+    background: #eeee;
+    padding: 20px;
+  }
+`;
+
+export const Field = styled.div`
+  margin-bottom: 15px;
+
+  input {
+    border: 1px solid #111111;
+    width: 100%;
+    padding: 0 10px;
+    height: 30px;
+  }
+`;
+
+export const InputSearch = styled.div`
+  display: flex;
+  background-color: #ffff;
+  border: 1px solid #111111;
+
+  input {
+    padding: 0 10px;
+    height: 30px;
+    border: transparent;
+  }
+
+  button {
+    background-color: transparent;
+    border: transparent;
+    margin-right: 10px;
+    text-transform: uppercase;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+export const GeoLocationField = styled.div`
+  margin: 50px 0;
+  display: flex;
+
+  input {
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  input + input {
+    margin-left: 10px;
+  }
+`;
+
+export const ButtonSave = styled.button`
+  height: 30px;
+  text-transform: uppercase;
+  border: transparent;
+  background-color: #00ab5d;
+  width: 100%;
+  color: #fff;
+`;
+
+export const ButtonResetContent = styled.div`
+  width: 300px;
+  background: #eeee;
+  margin-top: 15px;
+  border: 1px solid #000000;
+  padding: 20px;
+`;
+
+export const ButtonReset = styled.button`
+  height: 30px;
+  text-transform: uppercase;
+  border: transparent;
+  background-color: #f92b2b;
+  width: 100%;
+  color: #fff;
 `;
