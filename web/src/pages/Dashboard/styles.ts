@@ -7,11 +7,36 @@ export const Container = styled.div`
   justify-content: space-between;
 `;
 
-export const MapContainer = styled.div`
+export const Main = styled.div`
   position: relative;
-  width: 100vw;
-  height: 100vh;
   display: flex;
+  flex-direction: column;
+
+  p {
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    background: white;
+
+    thead {
+      th {
+        background-color: #0091ab;
+        border: 1px solid #dddddd;
+        color: #ffff;
+        padding: 2px;
+      }
+    }
+
+    tr:nth-child(even) {
+      background-color: #cacaca;
+      border: 1px solid #dddddd;
+    }
+  }
 `;
 
 export const FormContent = styled.div`

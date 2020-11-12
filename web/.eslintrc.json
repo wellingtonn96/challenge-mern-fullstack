@@ -25,6 +25,9 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
+    "react/prop-types": "off",
+    "no-unused-expressions": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
     "react/jsx-one-expression-per-line": "off",
     "radix": "off",
     "array-callback-return": "off",
