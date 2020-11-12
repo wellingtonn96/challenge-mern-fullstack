@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useCallback, useState } from 'react';
 import { Icon } from 'leaflet';
-import { TileLayer, Marker, Map, Popup } from 'react-leaflet';
+import { TileLayer, Map } from 'react-leaflet';
+import { FaTrash } from 'react-icons/fa';
+
+import MarkerCustumer from '../../components/Marker';
 
 import {
   Container,
@@ -11,6 +14,7 @@ import {
   ButtonSave,
   ButtonReset,
   ButtonResetContent,
+  ButtonDelete,
   Main,
 } from './styles';
 
@@ -23,7 +27,7 @@ export const icon = new Icon({
   popupAnchor: [-3, -50],
 });
 
-interface ICustomer {
+export interface ICustomer {
   name: string;
   street: string;
   city: string;
@@ -34,26 +38,60 @@ interface ICustomer {
 }
 
 const Dashboard: React.FC = () => {
+  const [name, setName] = useState('');
+  const [weight, setWeight] = useState('');
+  const [address, setAddress] = useState('');
+
   const [state, setState] = useState({
     currentLocation: { lat: -23.541, lng: -46.584 },
     zoom: 8,
     data,
   });
 
+  const handleSubmit = useCallback(
+    (event: FormEvent) => {
+      event.preventDefault();
+
+      const dataForm = {
+        name,
+        weight,
+        address,
+      };
+
+      console.log(dataForm);
+    },
+    [name, weight, address],
+  );
+
   return (
     <>
       <Container>
         <FormContent>
-          <form action="">
+          <form onSubmit={handleSubmit}>
             <Field>
-              <input type="text" placeholder="Nome do cliente" />
+              <input
+                type="text"
+                placeholder="Nome do cliente"
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
             </Field>
             <Field>
-              <input type="text" placeholder="Peso da Entrega" />
+              <input
+                type="text"
+                placeholder="Peso da Entrega"
+                value={weight}
+                onChange={e => setWeight(e.target.value)}
+              />
             </Field>
             <Field>
               <InputSearch>
-                <input type="text" placeholder="Endereço Cliente" />
+                <input
+                  type="text"
+                  placeholder="Endereço Cliente"
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                />
                 <button type="button">buscar</button>
               </InputSearch>
             </Field>
@@ -87,7 +125,7 @@ const Dashboard: React.FC = () => {
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <MarkersCustumers customers={data} />
+            <MarkerCustumer customers={data} />
           </Map>
           <p>Total de clientes: 15; Peso Total: Ticket Médio*: 301,4</p>
           <table>
@@ -99,6 +137,7 @@ const Dashboard: React.FC = () => {
               <th>Peso</th>
               <th>Lat</th>
               <th>Lng</th>
+              <th>Ações</th>
             </thead>
             <tbody>
               {data.map(item => (
@@ -110,6 +149,11 @@ const Dashboard: React.FC = () => {
                   <td>{item.weight}</td>
                   <td>{item.lat}</td>
                   <td>{item.lng}</td>
+                  <td>
+                    <ButtonDelete type="button">
+                      <FaTrash />
+                    </ButtonDelete>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -118,26 +162,6 @@ const Dashboard: React.FC = () => {
       </Container>
     </>
   );
-};
-
-interface MarkersProps {
-  customers: ICustomer[];
-}
-
-const MarkersCustumers: React.FC<MarkersProps> = ({ customers }) => {
-  const markers = customers.map((item, i) => (
-    <Marker
-      key={parseInt(i.toString())}
-      position={{ lat: item.lat, lng: item.lng }}
-      icon={icon}
-    >
-      <Popup>
-        {item.name} {item.weight}
-      </Popup>
-    </Marker>
-  ));
-
-  return <>{markers}</>;
 };
 
 export default Dashboard;

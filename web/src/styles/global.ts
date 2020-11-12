@@ -20,4 +20,8 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
+
+  button:hover {
+    opacity: 0.8
+  }
 `;

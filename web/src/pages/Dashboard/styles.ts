@@ -22,19 +22,26 @@ export const Main = styled.div`
     width: 100%;
     text-align: center;
     background: white;
+    margin-bottom: 50px;
 
     thead {
       th {
         background-color: #0091ab;
         border: 1px solid #dddddd;
         color: #ffff;
-        padding: 2px;
+        padding: 5px;
       }
     }
 
     tr:nth-child(even) {
       background-color: #cacaca;
       border: 1px solid #dddddd;
+    }
+
+    tr {
+      td {
+        padding: 5px;
+      }
     }
   }
 `;
@@ -121,4 +128,12 @@ export const ButtonReset = styled.button`
   background-color: #f92b2b;
   width: 100%;
   color: #fff;
+`;
+
+export const ButtonDelete = styled.button`
+  padding: 2px 8px;
+  background: #f92b2b;
+  border: transparent;
+  border-radius: 3px;
+  color: white;
 `;
