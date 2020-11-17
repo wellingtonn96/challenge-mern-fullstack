@@ -30,7 +30,7 @@ const MarkersCustumers: React.FC<MarkersProps> = ({
   return (
     <>
       {markers}
-      {lat && lng && address && (
+      {lat && lng && (
         <Marker position={{ lat, lng }} icon={icon}>
           <Popup>
             {address?.road} {address?.city} {address?.country}

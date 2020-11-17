@@ -10,6 +10,7 @@ export const Container = styled.div`
 export const Main = styled.div`
   position: relative;
   display: flex;
+  align-content: center;
   flex-direction: column;
 
   p {
@@ -18,8 +19,7 @@ export const Main = styled.div`
   }
 
   table {
-    border-collapse: collapse;
-    width: 100%;
+    width: 700px;
     text-align: center;
     background: white;
     margin-bottom: 50px;

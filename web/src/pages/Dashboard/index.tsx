@@ -59,8 +59,8 @@ export interface IAddress {
 const Dashboard: React.FC = () => {
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
+  const [data, setData] = useState<any[]>([]);
   const [address, setAddress] = useState<IAddress>();
-  const [data, setData] = useState<ICustomer[]>([]);
   const [position, setPosition] = useState<IPosition>({
     lat: undefined,
     lng: undefined,
@@ -104,17 +104,19 @@ const Dashboard: React.FC = () => {
       event.preventDefault();
 
       const dataForm = {
+        id: Math.random().toString(),
         name,
+        street: address?.road as string,
+        city: address?.city as string,
+        country: address?.country as string,
         weight,
-        geometry: {
-          lat: position.lat,
-          lng: position.lng,
-        },
+        lat: position.lat as number,
+        lng: position.lng as number,
       };
 
-      console.log(dataForm);
+      setData([...data, dataForm]);
     },
-    [name, weight, position],
+    [name, weight, position, address, data],
   );
 
   return (
@@ -193,7 +195,7 @@ const Dashboard: React.FC = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <MarkerCustomer
-              customers={data}
+              customers={data as ICustomer[]}
               address={address}
               lat={position.lat}
               lng={position.lng}
@@ -213,7 +215,7 @@ const Dashboard: React.FC = () => {
             </thead>
             <tbody>
               {data.map(item => (
-                <tr>
+                <tr key={item.id}>
                   <td>{item.name}</td>
                   <td>{item.street}</td>
                   <td>{item.city}</td>
