@@ -72,9 +72,16 @@ const Dashboard: React.FC = () => {
     data,
   });
 
-  const getLocation = useCallback(
-    async (event: LeafletMouseEvent) => {
-      setPosition({ lat: event.latlng.lat, lng: event.latlng.lng });
+  const getLocation = useCallback(async (event: LeafletMouseEvent) => {
+    setPosition({
+      lat: parseFloat(event.latlng.lat.toFixed(7)),
+      lng: parseFloat(event.latlng.lng.toFixed(7)),
+    });
+  }, []);
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent) => {
+      event.preventDefault();
 
       const results = await axios.get(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.lat}&lon=${position.lng}`,
@@ -95,28 +102,30 @@ const Dashboard: React.FC = () => {
         country: dataAddress.country,
         country_code: dataAddress.country_code,
       });
-    },
-    [position],
-  );
-
-  const handleSubmit = useCallback(
-    async (event: FormEvent) => {
-      event.preventDefault();
 
       const dataForm = {
         id: Math.random().toString(),
         name,
-        street: address?.road as string,
-        city: address?.city as string,
-        country: address?.country as string,
+        street: address?.road,
+        city: address?.city,
+        country: address?.country,
         weight,
-        lat: position.lat as number,
-        lng: position.lng as number,
+        lat: position.lat,
+        lng: position.lng,
       };
 
       setData([...data, dataForm]);
     },
     [name, weight, position, address, data],
+  );
+
+  const deleteCustomer = useCallback(
+    (id: string) => {
+      const newItems = data.filter(item => item.id !== id);
+
+      setData([...newItems]);
+    },
+    [data],
   );
 
   return (
@@ -204,6 +213,7 @@ const Dashboard: React.FC = () => {
           <p>Total de clientes: 15; Peso Total: Ticket Médio*: 301,4</p>
           <table>
             <thead>
+              <th>ID</th>
               <th>Nome</th>
               <th>Rua</th>
               <th>Cidade</th>
@@ -216,6 +226,7 @@ const Dashboard: React.FC = () => {
             <tbody>
               {data.map(item => (
                 <tr key={item.id}>
+                  <td>{item.id}</td>
                   <td>{item.name}</td>
                   <td>{item.street}</td>
                   <td>{item.city}</td>
@@ -224,7 +235,10 @@ const Dashboard: React.FC = () => {
                   <td>{item.lat}</td>
                   <td>{item.lng}</td>
                   <td>
-                    <ButtonDelete type="button">
+                    <ButtonDelete
+                      type="button"
+                      onClick={() => deleteCustomer(item.id)}
+                    >
                       <FaTrash />
                     </ButtonDelete>
                   </td>
