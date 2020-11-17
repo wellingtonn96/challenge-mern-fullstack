@@ -6,6 +6,7 @@
     "axios": "^0.19.2",
     "history": "^4.10.1",
     "leaflet": "^1.7.1",
+    "leaflet-control-geocoder": "^1.13.0",
     "polished": "^3.5.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

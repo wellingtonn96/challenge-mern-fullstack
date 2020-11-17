@@ -1,12 +1,20 @@
 import React from 'react';
 import { Marker, Popup } from 'react-leaflet';
-import { ICustomer, icon } from '../../pages/Dashboard';
+import { ICustomer, icon, IAddress } from '../../pages/Dashboard';
 
 interface MarkersProps {
   customers: ICustomer[];
+  lat?: number;
+  lng?: number;
+  address: IAddress | undefined;
 }
 
-const MarkersCustumers: React.FC<MarkersProps> = ({ customers }) => {
+const MarkersCustumers: React.FC<MarkersProps> = ({
+  customers,
+  lat,
+  lng,
+  address,
+}) => {
   const markers = customers.map((item, i) => (
     <Marker
       key={parseInt(i.toString())}
@@ -19,7 +27,18 @@ const MarkersCustumers: React.FC<MarkersProps> = ({ customers }) => {
     </Marker>
   ));
 
-  return <>{markers}</>;
+  return (
+    <>
+      {markers}
+      {lat && lng && address && (
+        <Marker position={{ lat, lng }} icon={icon}>
+          <Popup>
+            {address?.road} {address?.city} {address?.country}
+          </Popup>
+        </Marker>
+      )}
+    </>
+  );
 };
 
 export default MarkersCustumers;
