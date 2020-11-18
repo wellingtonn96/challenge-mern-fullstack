@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useState } from 'react';
+import React, { FormEvent, useCallback, useState, useEffect } from 'react';
 import { Icon, LeafletMouseEvent } from 'leaflet';
 import { TileLayer, Map } from 'react-leaflet';
 import { FaTrash } from 'react-icons/fa';
@@ -68,7 +68,7 @@ const Dashboard: React.FC = () => {
 
   const [state, setState] = useState({
     currentLocation: { lat: -23.541, lng: -46.584 },
-    zoom: 8,
+    zoom: 15,
     data,
   });
 
@@ -79,35 +79,40 @@ const Dashboard: React.FC = () => {
     });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.lat}&lon=${position.lng}`,
+      )
+      .then(results => {
+        const dataAddress = results.data.address;
+
+        setAddress({
+          road: dataAddress.road,
+          city_district: dataAddress.city_district,
+          city: dataAddress.city,
+          municipality: dataAddress.municipality,
+          county: dataAddress.county,
+          state_district: dataAddress.state_district,
+          state: dataAddress.state,
+          region: dataAddress.region,
+          postcode: dataAddress.postcode,
+          country: dataAddress.country,
+          country_code: dataAddress.country_code,
+        });
+      });
+  }, [position]);
+
   const handleSubmit = useCallback(
     async (event: FormEvent) => {
       event.preventDefault();
-
-      const results = await axios.get(
-        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.lat}&lon=${position.lng}`,
-      );
-
-      const dataAddress = results.data.address;
-
-      setAddress({
-        road: dataAddress.road,
-        city_district: dataAddress.city_district,
-        city: dataAddress.city,
-        municipality: dataAddress.municipality,
-        county: dataAddress.county,
-        state_district: dataAddress.state_district,
-        state: dataAddress.state,
-        region: dataAddress.region,
-        postcode: dataAddress.postcode,
-        country: dataAddress.country,
-        country_code: dataAddress.country_code,
-      });
 
       const dataForm = {
         id: Math.random().toString(),
         name,
         street: address?.road,
         city: address?.city,
+        state: address?.state,
         country: address?.country,
         weight,
         lat: position.lat,
@@ -192,7 +197,7 @@ const Dashboard: React.FC = () => {
             zoom={state.zoom}
             onclick={getLocation}
             style={{
-              width: 700,
+              width: 800,
               height: 400,
               borderWidth: 5,
               borderRadius: 10,
@@ -210,42 +215,46 @@ const Dashboard: React.FC = () => {
               lng={position.lng}
             />
           </Map>
-          <p>Total de clientes: 15; Peso Total: Ticket Médio*: 301,4</p>
-          <table>
-            <thead>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Rua</th>
-              <th>Cidade</th>
-              <th>Pais</th>
-              <th>Peso</th>
-              <th>Lat</th>
-              <th>Lng</th>
-              <th>Ações</th>
-            </thead>
-            <tbody>
-              {data.map(item => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.street}</td>
-                  <td>{item.city}</td>
-                  <td>{item.country}</td>
-                  <td>{item.weight}</td>
-                  <td>{item.lat}</td>
-                  <td>{item.lng}</td>
-                  <td>
-                    <ButtonDelete
-                      type="button"
-                      onClick={() => deleteCustomer(item.id)}
-                    >
-                      <FaTrash />
-                    </ButtonDelete>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {data.length > 0 && (
+            <>
+              <p>Total de clientes: 15; Peso Total: Ticket Médio*: 301,4</p>
+              <table>
+                <thead>
+                  <th>Nome</th>
+                  <th>Rua</th>
+                  <th>Cidade</th>
+                  <th>Estado</th>
+                  <th>Pais</th>
+                  <th>Peso</th>
+                  <th>Lat</th>
+                  <th>Lng</th>
+                  <th>Ações</th>
+                </thead>
+                <tbody>
+                  {data.map(item => (
+                    <tr key={item.id}>
+                      <td>{item.name}</td>
+                      <td>{item.street}</td>
+                      <td>{item.city}</td>
+                      <td>{item.state}</td>
+                      <td>{item.country}</td>
+                      <td>{item.weight}</td>
+                      <td>{item.lat}</td>
+                      <td>{item.lng}</td>
+                      <td>
+                        <ButtonDelete
+                          type="button"
+                          onClick={() => deleteCustomer(item.id)}
+                        >
+                          <FaTrash />
+                        </ButtonDelete>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
         </Main>
       </Container>
     </>

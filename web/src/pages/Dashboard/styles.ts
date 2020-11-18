@@ -19,15 +19,18 @@ export const Main = styled.div`
   }
 
   table {
-    width: 700px;
+    width: 800px;
     text-align: center;
     background: white;
     margin-bottom: 50px;
 
+    td {
+      width: 800px;
+    }
+
     thead {
       th {
         background-color: #0091ab;
-        border: 1px solid #dddddd;
         color: #ffff;
         padding: 5px;
       }
@@ -36,12 +39,6 @@ export const Main = styled.div`
     tr:nth-child(even) {
       background-color: #cacaca;
       border: 1px solid #dddddd;
-    }
-
-    tr {
-      td {
-        padding: 5px;
-      }
     }
   }
 `;
