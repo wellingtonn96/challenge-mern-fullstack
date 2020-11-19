@@ -5,7 +5,6 @@ import Routes from './routes';
 
 import GlobalStyle from './styles/global';
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
 
 const App: React.FC = () => (
   <>

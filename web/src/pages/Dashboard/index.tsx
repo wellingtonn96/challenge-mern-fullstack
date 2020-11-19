@@ -2,8 +2,8 @@ import React, { FormEvent, useCallback, useState, useEffect } from 'react';
 import { Icon, LeafletMouseEvent } from 'leaflet';
 import { TileLayer, Map } from 'react-leaflet';
 import { FaTrash } from 'react-icons/fa';
-
 import axios from 'axios';
+import api from '../../services/api';
 
 import MarkerCustomer from '../../components/Marker';
 
@@ -11,7 +11,6 @@ import {
   Container,
   Field,
   FormContent,
-  InputSearch,
   GeoLocationField,
   ButtonSave,
   ButtonReset,
@@ -80,6 +79,15 @@ const Dashboard: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    api
+      .get('customer')
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => alert(error));
+  }, []);
+
+  useEffect(() => {
     axios
       .get(
         `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.lat}&lon=${position.lng}`,
@@ -119,19 +127,27 @@ const Dashboard: React.FC = () => {
         lng: position.lng,
       };
 
-      setData([...data, dataForm]);
+      try {
+        const response = await api.post('customer', dataForm);
+
+        setData([...data, response.data]);
+      } catch (error) {
+        alert(error);
+      }
     },
     [name, weight, position, address, data],
   );
 
-  const deleteCustomer = useCallback(
-    (id: string) => {
-      const newItems = data.filter(item => item.id !== id);
+  const deleteCustomer = useCallback(async (id: string) => {
+    try {
+      await api.delete(`customer/${id}`);
 
-      setData([...newItems]);
-    },
-    [data],
-  );
+      const response = await api.get('customer');
+      setData(response.data);
+    } catch (error) {
+      alert(error);
+    }
+  }, []);
 
   return (
     <>
