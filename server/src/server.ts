@@ -1,12 +1,12 @@
-import express from 'express'
-import cors from 'cors'
+import express from 'express';
+import cors from 'cors';
 
-const app = express()
+const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
-interface  ICustomer {
+interface ICustomer {
   id: string;
   name: string;
   street: string;
@@ -18,23 +18,14 @@ interface  ICustomer {
   lng: number;
 }
 
-const customers: ICustomer[] = []
+const customers: ICustomer[] = [];
 
 app.get('/customer', (request, response) => {
-  return response.json(customers)
-})
+  return response.json(customers);
+});
 
 app.post('/customer', (request, response) => {
-  const { 
-    name,
-    street,
-    city,
-    state,
-    country,
-    weight,
-    lat,
-    lng ,
-  } = request.body
+  const { name, street, city, state, country, weight, lat, lng } = request.body;
 
   const customer = {
     id: Math.random().toString(),
@@ -45,22 +36,22 @@ app.post('/customer', (request, response) => {
     country,
     weight,
     lat,
-    lng ,
-  } as ICustomer
+    lng,
+  } as ICustomer;
 
-  customers.push(customer)
+  customers.push(customer);
 
-  return response.json(customer)
-})
+  return response.json(customer);
+});
 
 app.delete('/customer/:id', (request, response) => {
-  const { id } = request.params
+  const { id } = request.params;
 
-  const findIndex = customers.findIndex(item => item.id === id)
+  const findIndex = customers.findIndex(item => item.id === id);
 
-  const deletedCustomer = customers.splice(findIndex, 1)
+  const deletedCustomer = customers.splice(findIndex, 1);
 
-  return response.json(deletedCustomer)
-})
+  return response.json(deletedCustomer);
+});
 
-app.listen(3333, () => console.log('Web server running on port 3333'))
+app.listen(3333, () => console.log('Web server running on port 3333'));
