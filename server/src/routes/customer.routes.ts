@@ -1,44 +1,59 @@
 import { Router } from 'express';
 
 import CreateCustomerService from '../services/CreateCustomerService';
-import CustomerRepository from '../repositories/CustomerRepository';
+import customerRepository from '../repositories/CustomerRepository';
 import DeleteCustomerService from '../services/DeleteCustomerService';
 
 const customerRouter = Router();
 
-const customerRepository = new CustomerRepository();
-
-customerRouter.get('/', (request, response) => {
-  const customers = customerRepository.all();
-  return response.json(customers);
+customerRouter.get('/', async (request, response) => {
+  try {
+    const customers = await customerRepository.find();
+    return response.json(customers);
+  } catch (error) {
+    return response.json(400).json({ err: error.message });
+  }
 });
 
-customerRouter.post('/', (request, response) => {
-  const { name, street, city, state, country, weight, lat, lng } = request.body;
+customerRouter.post('/', async (request, response) => {
+  try {
+    const {
+      name,
+      street,
+      city,
+      state,
+      country,
+      weight,
+      lat,
+      lng,
+    } = request.body;
 
-  const createCustomer = new CreateCustomerService();
+    const createCustomer = new CreateCustomerService();
 
-  const customer = createCustomer.execute({
-    name,
-    street,
-    city,
-    state,
-    country,
-    weight,
-    lat,
-    lng,
-  });
+    const customer = await createCustomer.execute({
+      name,
+      street,
+      city,
+      state,
+      country,
+      weight,
+      lat,
+      lng,
+    });
 
-  return response.json(customer);
+    return response.json(customer);
+  } catch (error) {
+    return response.json(400).json({ err: error.message });
+  }
 });
 
-customerRouter.delete('/:id', (request, response) => {
+customerRouter.delete('/:id', async (request, response) => {
   try {
     const { id } = request.params;
 
     const deleteCustomer = new DeleteCustomerService();
 
-    const customer = deleteCustomer.execute(id);
+    const customer = await deleteCustomer.execute(id);
 
     return response.json(customer);
   } catch (err) {

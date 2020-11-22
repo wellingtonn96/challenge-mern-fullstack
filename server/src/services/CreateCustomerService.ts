@@ -1,5 +1,5 @@
-import Customer from '../models/Customer';
-import CustomerRepository from '../repositories/CustomerRepository';
+import { ICustomer } from '../models/Customer';
+import customerRepository from '../repositories/CustomerRepository';
 
 interface IRequest {
   name: string;
@@ -13,10 +13,8 @@ interface IRequest {
 }
 
 class CreateCustomerService {
-  public execute(data: IRequest): Customer {
-    const customerReposity = new CustomerRepository();
-
-    const customer = customerReposity.create(data);
+  public async execute(data: IRequest): Promise<ICustomer> {
+    const customer = customerRepository.create(data);
 
     return customer;
   }

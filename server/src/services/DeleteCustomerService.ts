@@ -1,17 +1,15 @@
-import Customer from '../models/Customer';
-import CustomerRepository from '../repositories/CustomerRepository';
+import { ICustomer } from '../models/Customer';
+import customerRepository from '../repositories/CustomerRepository';
 
 class DeleteCustomerService {
-  public execute(id: string): Customer[] {
-    const customerRepository = new CustomerRepository();
-
-    const customer = customerRepository.findOne(id);
+  public async execute(id: string): Promise<ICustomer | null> {
+    const customer = await customerRepository.findById(id);
 
     if (!customer) {
       throw new Error('Customer not exists');
     }
 
-    const deleteCustomer = customerRepository.delete(id);
+    const deleteCustomer = await customerRepository.findByIdAndRemove(id);
 
     return deleteCustomer;
   }

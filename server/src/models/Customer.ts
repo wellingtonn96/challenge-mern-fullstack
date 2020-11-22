@@ -1,42 +1,23 @@
-class Customer {
-  id: string;
+import { Schema, Document } from 'mongoose';
 
+export interface ICustomer extends Document {
   name: string;
-
   street: string;
-
   city: string;
-
   state: string;
-
   country: string;
-
   weight: number;
-
   lat: number;
-
   lng: number;
-
-  constructor({
-    name,
-    street,
-    city,
-    state,
-    country,
-    weight,
-    lat,
-    lng,
-  }: Omit<Customer, 'id'>) {
-    this.id = Math.random().toString();
-    this.name = name;
-    this.street = street;
-    this.city = city;
-    this.state = state;
-    this.country = country;
-    this.weight = weight;
-    this.lat = lat;
-    this.lng = lng;
-  }
 }
 
-export default Customer;
+export const CustomerSchema: Schema = new Schema({
+  name: { type: String, required: true },
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  country: { type: String, required: true },
+  weight: { type: Number, required: true },
+  lat: { type: Number, required: true },
+  lng: { type: Number, required: true },
+});
