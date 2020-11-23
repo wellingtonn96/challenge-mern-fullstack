@@ -10,3 +10,5 @@ export function createConnection(): void {
     console.log(error);
   }
 }
+
+createConnection();

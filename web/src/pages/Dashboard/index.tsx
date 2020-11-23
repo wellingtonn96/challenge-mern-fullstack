@@ -116,7 +116,6 @@ const Dashboard: React.FC = () => {
       event.preventDefault();
 
       const dataForm = {
-        id: Math.random().toString(),
         name,
         street: address?.road,
         city: address?.city,
@@ -248,7 +247,7 @@ const Dashboard: React.FC = () => {
                 </thead>
                 <tbody>
                   {data.map(item => (
-                    <tr key={item.id}>
+                    <tr key={item._id}>
                       <td>{item.name}</td>
                       <td>{item.street}</td>
                       <td>{item.city}</td>
@@ -260,7 +259,7 @@ const Dashboard: React.FC = () => {
                       <td>
                         <ButtonDelete
                           type="button"
-                          onClick={() => deleteCustomer(item.id)}
+                          onClick={() => deleteCustomer(item._id)}
                         >
                           <FaTrash />
                         </ButtonDelete>

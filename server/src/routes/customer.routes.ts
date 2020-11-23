@@ -53,11 +53,11 @@ customerRouter.delete('/:id', async (request, response) => {
 
     const deleteCustomer = new DeleteCustomerService();
 
-    const customer = await deleteCustomer.execute(id);
+    await deleteCustomer.execute(id);
 
-    return response.json(customer);
+    return response.json().send();
   } catch (err) {
-    return response.json({ err: err.message });
+    return response.status(400).json({ err: err.message });
   }
 });
 
