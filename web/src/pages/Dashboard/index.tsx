@@ -131,7 +131,7 @@ const Dashboard: React.FC = () => {
 
         setData([...data, response.data]);
       } catch (error) {
-        alert(error);
+        alert('erro ao cadastrar');
       }
     },
     [name, weight, position, address, data],
@@ -159,6 +159,7 @@ const Dashboard: React.FC = () => {
                 placeholder="Nome do cliente"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                required
               />
             </Field>
             <Field>
@@ -167,6 +168,7 @@ const Dashboard: React.FC = () => {
                 placeholder="Peso da Entrega"
                 value={weight}
                 onChange={e => setWeight(e.target.value)}
+                required
               />
             </Field>
             {/* <Field>
@@ -191,7 +193,7 @@ const Dashboard: React.FC = () => {
                   disabled
                 />
                 <input
-                  type="text"
+                  type="number"
                   placeholder="longitude"
                   value={position.lng}
                   disabled
@@ -217,6 +219,7 @@ const Dashboard: React.FC = () => {
               borderWidth: 5,
               borderRadius: 10,
               marginTop: 60,
+              zIndex: -1,
             }}
           >
             <TileLayer

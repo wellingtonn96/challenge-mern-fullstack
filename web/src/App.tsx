@@ -5,6 +5,7 @@ import Routes from './routes';
 
 import GlobalStyle from './styles/global';
 import 'leaflet/dist/leaflet.css';
+import ToastMessages from './components/ToastContainer';
 
 const App: React.FC = () => (
   <>
@@ -12,6 +13,7 @@ const App: React.FC = () => (
     <Router>
       <Routes />
     </Router>
+    <ToastMessages />
   </>
 );
 
