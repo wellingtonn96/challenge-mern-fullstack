@@ -1,15 +1,33 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+const toastTypeValidations = {
+  info: css`
+    background: #ebfaff;
+    color: #3172b7;
+  `,
+  success: css`
+    background: #e6fffa;
+    color: #2e656a;
+  `,
+  error: css`
+    background: #fddede;
+    color: #c53030;
+  `,
+};
+
+interface ToastProps {
+  type?: 'success' | 'info' | 'error';
+}
+
+export const Container = styled.div<ToastProps>`
   width: 300px;
   display: flex;
   position: relative;
-  background: #fddede;
   margin: 20px;
   padding: 16px;
   border-radius: 5px;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
-  color: #c53030;
+  ${props => toastTypeValidations[props.type || 'info']}
 
   & + div {
     margin-top: 10px;

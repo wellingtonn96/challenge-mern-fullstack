@@ -14,6 +14,7 @@ export interface ToastMessages {
 interface messageProps {
   messages: ToastMessages[];
 }
+
 const ToastContainer: React.FC = () => {
   return (
     <Container>
