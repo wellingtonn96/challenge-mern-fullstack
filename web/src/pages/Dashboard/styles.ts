@@ -1,17 +1,26 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
+  position: relative;
   max-width: 1120px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
 `;
 
-export const Main = styled.div`
-  position: relative;
+interface MainProps {
+  zIndex: boolean;
+}
+
+export const Main = styled.div<MainProps>`
   display: flex;
   align-content: center;
   flex-direction: column;
+  ${props =>
+    props.zIndex &&
+    css`
+      z-index: -1;
+    `}
 
   p {
     text-align: left;

@@ -5,15 +5,16 @@ import Routes from './routes';
 
 import GlobalStyle from './styles/global';
 import 'leaflet/dist/leaflet.css';
-import ToastMessages from './components/ToastContainer';
+import { ToastProvider } from './hooks/Toast';
 
 const App: React.FC = () => (
   <>
     <GlobalStyle />
     <Router>
-      <Routes />
+      <ToastProvider>
+        <Routes />
+      </ToastProvider>
     </Router>
-    <ToastMessages />
   </>
 );
 

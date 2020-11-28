@@ -6,21 +6,21 @@ import { Container } from './style';
 
 export interface ToastMessages {
   id: string;
-  type?: 'sucess' | 'error' | 'info';
+  type?: 'success' | 'error' | 'info';
   title: string;
   description: string;
 }
 
-interface messageProps {
+interface ToastContainerProps {
   messages: ToastMessages[];
 }
 
-const ToastContainer: React.FC = () => {
+const ToastContainer: React.FC<ToastContainerProps> = ({ messages }) => {
   return (
     <Container>
-      <Toast />
-      <Toast />
-      <Toast />
+      {messages.map(item => (
+        <Toast key={item.id} message={item} />
+      ))}
     </Container>
   );
 };

@@ -4,6 +4,7 @@ import { TileLayer, Map } from 'react-leaflet';
 import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import api from '../../services/api';
+import { useToast } from '../../hooks/Toast';
 
 import MarkerCustomer from '../../components/Marker';
 
@@ -56,6 +57,7 @@ export interface IAddress {
 }
 
 const Dashboard: React.FC = () => {
+  const { addToast, messages } = useToast();
   const [name, setName] = useState('');
   const [weight, setWeight] = useState('');
   const [data, setData] = useState<any[]>([]);
@@ -130,11 +132,21 @@ const Dashboard: React.FC = () => {
         const response = await api.post('customer', dataForm);
 
         setData([...data, response.data]);
+
+        addToast({
+          type: 'success',
+          title: 'Sucesso!',
+          description: 'Cadastro realizado com sucesso!',
+        });
       } catch (error) {
-        alert('erro ao cadastrar');
+        addToast({
+          type: 'error',
+          title: 'Erro!',
+          description: 'Ocorreu um problema no cadastro!',
+        });
       }
     },
-    [name, weight, position, address, data],
+    [name, weight, position, address, data, addToast],
   );
 
   const deleteCustomer = useCallback(async (id: string) => {
@@ -208,7 +220,7 @@ const Dashboard: React.FC = () => {
           </ButtonResetContent>
         </FormContent>
 
-        <Main>
+        <Main zIndex={!!messages.length}>
           <Map
             center={state.currentLocation}
             zoom={state.zoom}
@@ -219,7 +231,6 @@ const Dashboard: React.FC = () => {
               borderWidth: 5,
               borderRadius: 10,
               marginTop: 60,
-              zIndex: -1,
             }}
           >
             <TileLayer
