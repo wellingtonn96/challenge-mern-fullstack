@@ -1,26 +1,31 @@
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+interface ContainerProps {
+  zIndex: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   position: relative;
   max-width: 1120px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-`;
-
-interface MainProps {
-  zIndex: boolean;
-}
-
-export const Main = styled.div<MainProps>`
-  display: flex;
-  align-content: center;
-  flex-direction: column;
   ${props =>
     props.zIndex &&
     css`
       z-index: -1;
     `}
+
+  header {
+    background: blue;
+    width: 100%;
+  }
+`;
+
+export const Main = styled.div`
+  display: flex;
+  align-content: center;
+  flex-direction: column;
 
   p {
     text-align: left;
@@ -49,16 +54,26 @@ export const Main = styled.div<MainProps>`
       background-color: #cacaca;
       border: 1px solid #dddddd;
     }
+
+    tr {
+      padding: 20px;
+    }
   }
 `;
 
 export const FormContent = styled.div`
   form {
+    background: #fff;
     margin-top: 60px;
     width: 300px;
-    border: 1px solid #000000;
-    background: #eeee;
     padding: 20px;
+    box-shadow: 0 0 10px #bbbb;
+
+    h1 {
+      font-size: 24px;
+      padding: 20px;
+      text-align: center;
+    }
   }
 `;
 
@@ -66,41 +81,43 @@ export const Field = styled.div`
   margin-bottom: 15px;
 
   input {
-    border: 1px solid #111111;
+    border: none;
+    border-bottom: 1px solid #bbbb;
     width: 100%;
     padding: 0 10px;
-    height: 30px;
+    height: 40px;
   }
 `;
 
-export const InputSearch = styled.div`
-  display: flex;
-  background-color: #ffff;
-  border: 1px solid #111111;
+// export const InputSearch = styled.div`
+//   display: flex;
+//   background-color: transparent;
+//   border: none;
 
-  input {
-    padding: 0 10px;
-    height: 30px;
-    border: transparent;
-  }
+//   input {
+//     padding: 0 10px;
+//     height: 30px;
+//     border: transparent;
+//   }
 
-  button {
-    background-color: transparent;
-    border: transparent;
-    margin-right: 10px;
-    text-transform: uppercase;
+//   button {
+//     background-color: transparent;
+//     border: transparent;
+//     margin-right: 10px;
+//     text-transform: uppercase;
 
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
+//     &:hover {
+//       text-decoration: underline;
+//     }
+//   }
+// `;
 
 export const GeoLocationField = styled.div`
   margin: 50px 0;
   display: flex;
 
   input {
+    background-color: transparent;
     text-align: center;
     text-transform: capitalize;
   }
@@ -111,7 +128,7 @@ export const GeoLocationField = styled.div`
 `;
 
 export const ButtonSave = styled.button`
-  height: 30px;
+  height: 40px;
   text-transform: uppercase;
   border: transparent;
   background-color: #00ab5d;
@@ -120,26 +137,19 @@ export const ButtonSave = styled.button`
 `;
 
 export const ButtonResetContent = styled.div`
+  box-shadow: 0 0 10px #bbbb;
   width: 300px;
-  background: #eeee;
+  background: #ffff;
   margin-top: 15px;
-  border: 1px solid #000000;
+  border: transparent;
   padding: 20px;
 `;
 
 export const ButtonReset = styled.button`
-  height: 30px;
+  height: 40px;
   text-transform: uppercase;
   border: transparent;
   background-color: #f92b2b;
   width: 100%;
   color: #fff;
-`;
-
-export const ButtonDelete = styled.button`
-  padding: 2px 8px;
-  background: #f92b2b;
-  border: transparent;
-  border-radius: 3px;
-  color: white;
 `;

@@ -1,12 +1,12 @@
 import React, { FormEvent, useCallback, useState, useEffect } from 'react';
 import { Icon, LeafletMouseEvent } from 'leaflet';
 import { TileLayer, Map } from 'react-leaflet';
-import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import api from '../../services/api';
 import { useToast } from '../../hooks/Toast';
 
 import MarkerCustomer from '../../components/Marker';
+import Header from '../../components/Header';
 
 import {
   Container,
@@ -16,8 +16,6 @@ import {
   ButtonSave,
   ButtonReset,
   ButtonResetContent,
-  ButtonDelete,
-  Main,
 } from './styles';
 
 export const icon = new Icon({
@@ -67,7 +65,7 @@ const Dashboard: React.FC = () => {
     lng: undefined,
   });
 
-  const [state, setState] = useState({
+  const [state] = useState({
     currentLocation: { lat: -23.541, lng: -46.584 },
     zoom: 15,
     data,
@@ -86,7 +84,7 @@ const Dashboard: React.FC = () => {
       .then(response => {
         setData(response.data);
       })
-      .catch(error => alert(error));
+      .catch(error => console.log(error));
   }, []);
 
   useEffect(() => {
@@ -149,22 +147,22 @@ const Dashboard: React.FC = () => {
     [name, weight, position, address, data, addToast],
   );
 
-  const deleteCustomer = useCallback(async (id: string) => {
-    try {
-      await api.delete(`customer/${id}`);
-
-      const response = await api.get('customer');
-      setData(response.data);
-    } catch (error) {
-      alert(error);
-    }
+  const handleResetForm = useCallback(() => {
+    setName('');
+    setWeight('');
+    setPosition({
+      lat: undefined,
+      lng: undefined,
+    });
   }, []);
 
   return (
     <>
-      <Container>
+      <Header />
+      <Container zIndex={!!messages.length}>
         <FormContent>
           <form onSubmit={handleSubmit}>
+            <h1>Cadastro</h1>
             <Field>
               <input
                 type="text"
@@ -213,78 +211,39 @@ const Dashboard: React.FC = () => {
               </GeoLocationField>
             </Field>
 
-            <ButtonSave type="submit">cadastrar cliente</ButtonSave>
+            <ButtonSave type="submit">cadastrar</ButtonSave>
           </form>
           <ButtonResetContent>
-            <ButtonReset type="submit">Resetar cadastro</ButtonReset>
+            <ButtonReset type="button" onClick={handleResetForm}>
+              Resetar
+            </ButtonReset>
           </ButtonResetContent>
         </FormContent>
 
-        <Main zIndex={!!messages.length}>
-          <Map
-            center={state.currentLocation}
-            zoom={state.zoom}
-            onclick={getLocation}
-            style={{
-              width: 800,
-              height: 400,
-              borderWidth: 5,
-              borderRadius: 10,
-              marginTop: 60,
-            }}
-          >
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <MarkerCustomer
-              customers={data as ICustomer[]}
-              address={address}
-              lat={position.lat}
-              lng={position.lng}
-            />
-          </Map>
-          {data.length > 0 && (
-            <>
-              <p>Total de clientes: 15; Peso Total: Ticket Médio*: 301,4</p>
-              <table>
-                <thead>
-                  <th>Nome</th>
-                  <th>Rua</th>
-                  <th>Cidade</th>
-                  <th>Estado</th>
-                  <th>Pais</th>
-                  <th>Peso</th>
-                  <th>Lat</th>
-                  <th>Lng</th>
-                  <th>Ações</th>
-                </thead>
-                <tbody>
-                  {data.map(item => (
-                    <tr key={item._id}>
-                      <td>{item.name}</td>
-                      <td>{item.street}</td>
-                      <td>{item.city}</td>
-                      <td>{item.state}</td>
-                      <td>{item.country}</td>
-                      <td>{item.weight}</td>
-                      <td>{item.lat}</td>
-                      <td>{item.lng}</td>
-                      <td>
-                        <ButtonDelete
-                          type="button"
-                          onClick={() => deleteCustomer(item._id)}
-                        >
-                          <FaTrash />
-                        </ButtonDelete>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </>
-          )}
-        </Main>
+        <Map
+          center={state.currentLocation}
+          zoom={state.zoom}
+          onclick={getLocation}
+          style={{
+            width: 800,
+            height: 480,
+            borderWidth: 5,
+            borderRadius: 10,
+            marginTop: 60,
+            marginLeft: 30,
+          }}
+        >
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <MarkerCustomer
+            customers={data as ICustomer[]}
+            address={address}
+            lat={position.lat}
+            lng={position.lng}
+          />
+        </Map>
       </Container>
     </>
   );
